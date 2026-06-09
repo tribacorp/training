@@ -1,0 +1,15 @@
+name: README check            # label shown in the Actions tab
+on: [push, pull_request]      # WHEN: on every push AND every PR
+
+jobs:
+  check-readme:                  # a job (id can be anything)
+    runs-on: ubuntu-latest      # the runner = a fresh Linux agent
+    steps:
+      - uses: actions/checkout@v4             # clone your repo onto the runner
+      - name: README must say "beginning"
+        run: |                              # a shell command
+          if ! grep -qi "beginning" README.md; then
+            echo "::error::README.md is missing the word 'beginning'!"
+            exit 1                            # non-zero exit = ✗ red, blocks nothing yet
+          fi
+          echo "✅ README looks good"
